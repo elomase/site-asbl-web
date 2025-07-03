@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixie - Administration</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="admin-body">
+    <!-- Page de connexion -->
+    <div id="login-page" class="login-container">
+        <div class="login-card">
+            <div class="login-header">
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    <h1>Pixie Admin</h1>
+                </div>
+                <p>Interface d'administration</p>
+            </div>
+            <form id="login-form" class="login-form">
+                <div class="form-group">
+                    <label for="admin-password">Mot de passe administrateur</label>
+                    <input type="password" id="admin-password" required>
+                </div>
+                <button type="submit" class="btn-login">
+                    <i class="fas fa-sign-in-alt"></i>
+                    Se connecter
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Interface d'administration -->
+    <div id="admin-interface" class="admin-interface" style="display: none;">
+        <!-- Header admin -->
+        <header class="admin-header">
+            <div class="admin-nav">
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    <h1>Pixie Admin</h1>
+                </div>
+                <nav class="admin-menu">
+                    <button class="menu-btn active" data-section="dashboard">
+                        <i class="fas fa-chart-dashboard"></i>
+                        Tableau de bord
+                    </button>
+                    <button class="menu-btn" data-section="asbl">
+                        <i class="fas fa-heart"></i>
+                        Gestion ASBL
+                    </button>
+                    <button class="menu-btn" data-section="categories">
+                        <i class="fas fa-tags"></i>
+                        Catégories
+                    </button>
+                    <button class="menu-btn" data-section="distributeurs">
+                        <i class="fas fa-qrcode"></i>
+                        Distributeurs
+                    </button>
+                    <button class="menu-btn" data-section="qrcodes">
+                        <i class="fas fa-barcode"></i>
+                        Codes QR
+                    </button>
+                </nav>
+                <button id="logout-btn" class="btn-logout">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Déconnexion
+                </button>
+            </div>
+        </header>
+
+        <!-- Contenu principal -->
+        <main class="admin-main">
+            <!-- Section Tableau de bord -->
+            <section id="dashboard-section" class="admin-section active">
+                <div class="section-header">
+                    <h2>Tableau de bord</h2>
+                    <p>Vue d'ensemble de votre plateforme Pixie</p>
+                </div>
+                
+                <div class="stats-grid">
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-asbl-admin">6</h3>
+                            <p>ASBL partenaires</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-units-admin">3</h3>
+                            <p>Unités vendues</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-categories-admin">6</h3>
+                            <p>Catégories</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-distributeurs-admin">0</h3>
+                            <p>Distributeurs</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-barcode"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="total-qrcodes-admin">0</h3>
+                            <p>Codes QR générés</p>
+                        </div>
+                    </div>
+                    <div class="stat-card">
+                        <div class="stat-icon">
+                            <i class="fas fa-check-circle"></i>
+                        </div>
+                        <div class="stat-content">
+                            <h3 id="used-qrcodes-admin">0</h3>
+                            <p>Codes QR utilisés</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-activity">
+                    <h3>Activité récente</h3>
+                    <div class="activity-list" id="activity-list">
+                        <!-- Activités générées dynamiquement -->
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section Gestion ASBL -->
+            <section id="asbl-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestion des ASBL</h2>
+                    <button id="add-asbl-btn" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Ajouter une ASBL
+                    </button>
+                </div>
+                
+                <div class="admin-table-container">
+                    <table class="admin-table">
+                        <thead>
+                            <tr>
+                                <th>Logo</th>
+                                <th>Nom</th>
+                                <th>Catégorie</th>
+                                <th>Unités</th>
+                                <th>Vidéo</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="asbl-table-body">
+                            <!-- Contenu généré dynamiquement -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <!-- Section Catégories -->
+            <section id="categories-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestion des catégories</h2>
+                    <button id="add-category-btn" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Ajouter une catégorie
+                    </button>
+                </div>
+                
+                <div class="categories-grid" id="categories-grid">
+                    <!-- Catégories générées dynamiquement -->
+                </div>
+            </section>
+
+            <!-- Section Distributeurs -->
+            <section id="distributeurs-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestion des distributeurs</h2>
+                    <button id="add-distributeur-btn" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Ajouter un distributeur
+                    </button>
+                </div>
+                
+                <div class="distributeurs-grid" id="distributeurs-grid">
+                    <!-- Distributeurs générés dynamiquement -->
+                </div>
+            </section>
+
+            <!-- Section Codes QR -->
+            <section id="qrcodes-section" class="admin-section">
+                <div class="section-header">
+                    <h2>Gestion des codes QR</h2>
+                    <button onclick="generateProductQRCodes()" class="btn-primary">
+                        <i class="fas fa-plus"></i>
+                        Générer des codes QR
+                    </button>
+                </div>
+                
+                <div class="qrcodes-grid" id="qrcodes-grid">
+                    <!-- Codes QR générés dynamiquement -->
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Modal d'ajout/édition ASBL -->
+    <div id="asbl-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="asbl-modal-title">Ajouter une ASBL</h3>
+                <button class="modal-close" id="asbl-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="asbl-form" class="admin-form">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="asbl-nom">Nom de l'ASBL *</label>
+                        <input type="text" id="asbl-nom" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="asbl-categorie">Catégorie *</label>
+                        <select id="asbl-categorie" required>
+                            <!-- Options générées dynamiquement -->
+                        </select>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asbl-logo">Logo/Emoji</label>
+                    <input type="text" id="asbl-logo" placeholder="🏥">
+                </div>
+                
+                <div class="form-group">
+                    <label for="asbl-description">Description *</label>
+                    <textarea id="asbl-description" required rows="3"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asbl-mission">Mission *</label>
+                    <textarea id="asbl-mission" required rows="3"></textarea>
+                </div>
+                
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="asbl-email">Email *</label>
+                        <input type="email" id="asbl-email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="asbl-telephone">Téléphone *</label>
+                        <input type="tel" id="asbl-telephone" required>
+                    </div>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asbl-adresse">Adresse *</label>
+                    <textarea id="asbl-adresse" required rows="2"></textarea>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asbl-website">Site web *</label>
+                    <input type="url" id="asbl-website" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="asbl-video">Vidéo (URL YouTube, Vimeo, etc.)</label>
+                    <input type="url" id="asbl-video" placeholder="https://www.youtube.com/watch?v=...">
+                </div>
+                
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="asbl-cancel">Annuler</button>
+                    <button type="submit" class="btn-primary">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal d'ajout/édition catégorie -->
+    <div id="category-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 id="category-modal-title">Ajouter une catégorie</h3>
+                <button class="modal-close" id="category-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form id="category-form" class="admin-form">
+                <div class="form-group">
+                    <label for="category-nom">Nom de la catégorie *</label>
+                    <input type="text" id="category-nom" required>
+                </div>
+                <div class="form-group">
+                    <label for="category-couleur">Couleur *</label>
+                    <input type="color" id="category-couleur" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="category-cancel">Annuler</button>
+                    <button type="submit" class="btn-primary">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/admin.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixie - Sélection ASBL</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/qr.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="qr-body">
+    <!-- Header simplifié -->
+    <header class="qr-header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-seedling"></i>
+                <h1>Pixie</h1>
+            </div>
+            <div class="qr-info">
+                <i class="fas fa-qrcode"></i>
+                <span>Distributeur automatique</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Contenu principal -->
+    <main class="qr-main">
+        <div class="container">
+            <!-- Étape 0: Scan QR Code -->
+            <section id="qr-scan" class="qr-section active">
+                <div class="qr-card">
+                    <div class="qr-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h2>Scanner le QR Code</h2>
+                    <p>Pointez votre caméra vers le QR code du distributeur</p>
+                    
+                    <div class="qr-scanner-container">
+                        <video id="qr-scanner-video" autoplay playsinline></video>
+                        <canvas id="qr-scanner-canvas" style="display: none;"></canvas>
+                        <div class="qr-scanner-overlay">
+                            <div class="qr-scanner-frame">
+                                <div class="qr-corner qr-corner-tl"></div>
+                                <div class="qr-corner qr-corner-tr"></div>
+                                <div class="qr-corner qr-corner-bl"></div>
+                                <div class="qr-corner qr-corner-br"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="qr-scanner-controls">
+                        <button id="start-qr-scan-btn" class="btn-primary">
+                            <i class="fas fa-camera"></i>
+                            Activer la caméra
+                        </button>
+                        <button id="stop-qr-scan-btn" class="btn-secondary" style="display: none;">
+                            <i class="fas fa-stop"></i>
+                            Arrêter le scan
+                        </button>
+                    </div>
+                    
+                    <div id="qr-scan-status" class="qr-scan-status"></div>
+                    
+                    <div class="qr-scan-info">
+                        <p><i class="fas fa-info-circle"></i> Placez le QR code dans le cadre pour le scanner automatiquement</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Étape 1: Validation QR -->
+            <section id="qr-validation" class="qr-section">
+                <div class="qr-card">
+                    <div class="qr-icon">
+                        <i class="fas fa-qrcode"></i>
+                    </div>
+                    <h2>Validation du QR Code</h2>
+                    <p>Vérification de votre scan en cours...</p>
+                    <div class="loading-spinner">
+                        <div class="spinner"></div>
+                    </div>
+                    <div id="qr-status" class="qr-status"></div>
+                </div>
+            </section>
+
+            <!-- Étape 2: Photo du produit -->
+            <section id="product-photo" class="qr-section">
+                <div class="photo-card">
+                    <div class="photo-icon">
+                        <i class="fas fa-camera"></i>
+                    </div>
+                    <h2>Photographiez votre produit</h2>
+                    <p>Prenez une photo de votre achat pour valider la transaction</p>
+                    
+                    <div class="camera-container">
+                        <video id="camera-video" autoplay playsinline></video>
+                        <canvas id="photo-canvas" style="display: none;"></canvas>
+                        <div id="photo-preview" class="photo-preview" style="display: none;">
+                            <img id="captured-photo" alt="Photo du produit">
+                        </div>
+                    </div>
+                    
+                    <div class="camera-controls">
+                        <button id="start-camera-btn" class="btn-primary">
+                            <i class="fas fa-camera"></i>
+                            Activer la caméra
+                        </button>
+                        <button id="take-photo-btn" class="btn-primary" style="display: none;">
+                            <i class="fas fa-camera"></i>
+                            Prendre la photo
+                        </button>
+                        <button id="retake-photo-btn" class="btn-secondary" style="display: none;">
+                            <i class="fas fa-redo"></i>
+                            Reprendre
+                        </button>
+                        <button id="confirm-photo-btn" class="btn-success" style="display: none;">
+                            <i class="fas fa-check"></i>
+                            Confirmer la photo
+                        </button>
+                    </div>
+                    
+                    <div class="photo-info">
+                        <p><i class="fas fa-info-circle"></i> Cette photo permet de valider votre achat et d'associer votre don à l'ASBL choisie</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Étape 3: Sélection ASBL -->
+            <section id="asbl-selection" class="qr-section">
+                <div class="selection-header">
+                    <h2>Choisissez votre ASBL</h2>
+                    <p>Sélectionnez l'association que vous souhaitez soutenir avec votre achat</p>
+                    <div class="distributeur-info" id="distributeur-info">
+                        <!-- Informations du distributeur -->
+                    </div>
+                </div>
+
+                <div class="asbl-grid" id="qr-asbl-grid">
+                    <!-- ASBL générées dynamiquement -->
+                </div>
+            </section>
+
+            <!-- Étape 4: Confirmation -->
+            <section id="confirmation" class="qr-section">
+                <div class="confirmation-card">
+                    <div class="success-icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <h2>Merci pour votre soutien !</h2>
+                    <div id="selected-asbl-info" class="selected-asbl">
+                        <!-- Informations de l'ASBL sélectionnée -->
+                    </div>
+                    <div class="donation-info">
+                        <p><strong>Un pourcentage de votre achat sera reversé à cette ASBL</strong></p>
+                        <p>Votre contribution aide à soutenir des projets locaux et solidaires</p>
+                    </div>
+                    <div class="confirmation-actions">
+                        <button id="new-selection-btn" class="btn-secondary">
+                            <i class="fas fa-redo"></i>
+                            Nouvelle sélection
+                        </button>
+                        <button id="close-qr-btn" class="btn-primary">
+                            <i class="fas fa-times"></i>
+                            Fermer
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Erreur QR -->
+            <section id="qr-error" class="qr-section">
+                <div class="error-card">
+                    <div class="error-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <h2>QR Code invalide</h2>
+                    <p>Ce QR code n'est pas valide ou a expiré.</p>
+                    <p>Veuillez scanner le QR code affiché sur un distributeur Pixie.</p>
+                    <button id="retry-qr-btn" class="btn-primary">
+                        <i class="fas fa-redo"></i>
+                        Réessayer
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer simplifié -->
+    <footer class="qr-footer">
+        <div class="container">
+            <p>&copy; 2024 Pixie - Distributeurs automatiques solidaires</p>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/qr.js"></script>
+</body>
+</html>
+

@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pixie - Plateforme ASBL</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo">
+                    <i class="fas fa-seedling"></i>
+                    <h1>Pixie</h1>
+                </div>
+                <nav class="nav">
+                    <a href="#accueil" class="nav-link active">Accueil</a>
+                    <a href="#asbl" class="nav-link">ASBL</a>
+                    <a href="#statistiques" class="nav-link">Statistiques</a>
+                    <a href="contact.html" class="nav-link">Contact</a>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+        <!-- Section Accueil -->
+        <section id="accueil" class="section hero">
+            <div class="container">
+                              <div class="hero-content">
+                    <h2 class="hero-title">Distributeurs automatiques solidaires</h2>
+                    <p class="hero-subtitle">Pixie transforme vos achats quotidiens en gestes solidaires. Chaque snack acheté dans nos distributeurs permet de soutenir des ASBL locales et moins connues.</p>
+                    <div class="hero-actions">
+                        <a href="#comment-ca-marche" class="btn-primary">
+                            <i class="fas fa-play-circle"></i>
+                            Comment ça marche
+                        </a>
+                        <a href="qr.html" class="btn-secondary">
+                            <i class="fas fa-qrcode"></i>
+                            Scanner QR Code
+                        </a>
+                    </div>
+                </div>
+                    <div class="hero-stats">
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-asbl">6</div>
+                            <div class="stat-label">ASBL partenaires</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-unites">0</div>
+                            <div class="stat-label">Unités achetées</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number" id="total-categories">6</div>
+                            <div class="stat-label">Domaines d'action</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Comment ça marche -->
+        <section id="comment-ca-marche" class="section how-it-works">
+            <div class="container">
+                <div class="section-header">
+                    <h2>Comment ça marche ?</h2>
+                    <p>Découvrez comment vos achats quotidiens deviennent des gestes solidaires</p>
+                </div>
+                
+                <div class="steps-grid">
+                    <div class="step-card">
+                        <div class="step-number">1</div>
+                        <div class="step-icon">
+                            <i class="fas fa-shopping-cart"></i>
+                        </div>
+                        <h3>Achetez vos snacks</h3>
+                        <p>Choisissez vos produits préférés dans nos distributeurs automatiques Pixie</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">2</div>
+                        <div class="step-icon">
+                            <i class="fas fa-camera"></i>
+                        </div>
+                        <h3>Photographiez votre achat</h3>
+                        <p>Prenez une photo de votre produit pour valider la transaction</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">3</div>
+                        <div class="step-icon">
+                            <i class="fas fa-qrcode"></i>
+                        </div>
+                        <h3>Scannez le QR code</h3>
+                        <p>Utilisez votre smartphone pour scanner le QR code du distributeur</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">4</div>
+                        <div class="step-icon">
+                            <i class="fas fa-heart"></i>
+                        </div>
+                        <h3>Choisissez votre ASBL</h3>
+                        <p>Sélectionnez l'association que vous souhaitez soutenir parmi notre sélection</p>
+                    </div>
+                    
+                    <div class="step-card">
+                        <div class="step-number">5</div>
+                        <div class="step-icon">
+                            <i class="fas fa-hand-holding-heart"></i>
+                        </div>
+                        <h3>Votre don est reversé</h3>
+                        <p>Un pourcentage de votre achat est automatiquement reversé à l'ASBL choisie</p>
+                    </div>
+                </div>
+                
+                <div class="impact-info">
+                    <div class="impact-card">
+                        <h3>Notre mission</h3>
+                        <p>Pixie s'engage à soutenir un maximum d'ASBL locales et moins connues en leur offrant une vitrine proactive. Nous croyons que chaque petite action peut avoir un grand impact sur notre communauté.</p>
+                    </div>
+                    <div class="impact-stats">
+                        <div class="impact-stat">
+                            <div class="impact-number">15%</div>
+                            <div class="impact-label">de chaque achat reversé</div>
+                        </div>
+                        <div class="impact-stat">
+                            <div class="impact-number">100%</div>
+                            <div class="impact-label">transparent et traçable</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Section ASBL -->
+        <section id="asbl" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Nos ASBL Partenaires</h2>
+                    <p class="section-description">Choisissez l'ASBL que vous souhaitez soutenir</p>
+                    <button class="edit-mode-btn" id="edit-mode-btn">
+                        <i class="fas fa-edit"></i>
+                        Mode Édition
+                    </button>
+                </div>
+
+                <!-- Filtres -->
+                <div class="filters">
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="search-input" placeholder="Rechercher une ASBL...">
+                    </div>
+                    <div class="filter-buttons">
+                        <button class="filter-btn active" data-category="all">Toutes</button>
+                        <button class="filter-btn" data-category="Humanitaire">Humanitaire</button>
+                        <button class="filter-btn" data-category="Médical">Médical</button>
+                        <button class="filter-btn" data-category="Environnement">Environnement</button>
+                        <button class="filter-btn" data-category="Enfance">Enfance</button>
+                        <button class="filter-btn" data-category="Droits humains">Droits humains</button>
+                    </div>
+                </div>
+
+                <!-- Grille des ASBL -->
+                <div class="asbl-grid" id="asbl-grid">
+                    <!-- Les cartes ASBL seront générées dynamiquement -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Section Statistiques -->
+        <section id="statistiques" class="section">
+            <div class="container">
+                <div class="section-header">
+                    <h2 class="section-title">Statistiques des Contributions</h2>
+                    <p class="section-description">Suivez l'impact de vos contributions</p>
+                </div>
+
+                <div class="stats-grid" id="stats-grid">
+                    <!-- Les statistiques seront générées dynamiquement -->
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Modal pour les détails ASBL -->
+    <div class="modal" id="asbl-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title" id="modal-title"></h3>
+                <button class="modal-close" id="modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modal-body">
+                <!-- Contenu dynamique -->
+            </div>
+            <div class="modal-footer">
+                <div class="purchase-section">
+                    <label for="units-input">Nombre d'unités à acheter :</label>
+                    <div class="units-control">
+                        <button class="units-btn" id="decrease-units">-</button>
+                        <input type="number" id="units-input" value="1" min="1" max="100">
+                        <button class="units-btn" id="increase-units">+</button>
+                    </div>
+                    <button class="purchase-btn" id="purchase-btn">
+                        <i class="fas fa-shopping-cart"></i>
+                        Acheter les unités
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal d'édition ASBL -->
+    <div class="edit-modal" id="edit-modal">
+        <div class="edit-modal-content">
+            <div class="modal-header">
+                <h3 class="modal-title">Éditer l'ASBL</h3>
+                <button class="modal-close" id="edit-modal-close">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <form class="edit-form" id="edit-form">
+                <div class="form-group">
+                    <label for="edit-nom">Nom de l'ASBL</label>
+                    <input type="text" id="edit-nom" name="nom" required>
+                </div>
+                
+                <div class="form-group">
+                    <label for="edit-categorie">Catégorie</label>
+                    <select id="edit-categorie" name="categorie" required>
+                        <option value="Humanitaire">Humanitaire</option>
+                        <option value="Médical">Médical</option>
+                        <option value="Environnement">Environnement</option>
+                        <option value="Enfance">Enfance</option>
+                        <option value="Développement">Développement</option>
+                        <option value="Droits humains">Droits humains</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-image">Image/Logo</label>
+                    <div class="image-upload" onclick="document.getElementById('edit-image-input').click()">
+                        <input type="file" id="edit-image-input" accept="image/*">
+                        <div id="image-upload-text">
+                            <i class="fas fa-cloud-upload-alt"></i>
+                            <p>Cliquez pour télécharger une image</p>
+                        </div>
+                        <img id="image-preview" class="image-preview" style="display: none;">
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-description">Description</label>
+                    <textarea id="edit-description" name="description" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-mission">Mission</label>
+                    <textarea id="edit-mission" name="mission" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-email">Email</label>
+                    <input type="email" id="edit-email" name="email" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-telephone">Téléphone</label>
+                    <input type="tel" id="edit-telephone" name="telephone" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-adresse">Adresse</label>
+                    <textarea id="edit-adresse" name="adresse" required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-website">Site web</label>
+                    <input type="url" id="edit-website" name="website" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="edit-video">Vidéo (URL YouTube, Vimeo, etc.)</label>
+                    <input type="url" id="edit-video" name="video" placeholder="https://www.youtube.com/watch?v=...">
+                    <div class="video-container" id="video-preview-container" style="display: none;">
+                        <div class="video-placeholder">
+                            <i class="fas fa-play-circle"></i>
+                            <p>Aperçu vidéo</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" id="edit-cancel">Annuler</button>
+                    <button type="submit" class="btn-save">Sauvegarder</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h4>Pixie</h4>
+                    <p>Cultivons ensemble l'écosystème de l'entraide</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact</h4>
+                    <p>Email: contact@pixie.be</p>
+                    <p>Téléphone: +32 2 xxx xx xx</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Liens utiles</h4>
+                    <p><a href="contact.html">Nous contacter</a></p>
+                    <p><a href="admin.html">Espace administrateur</a></p>
+                    <p><a href="qr.html">Scanner QR Code</a></p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Pixie. Tous droits réservés.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+</body>
+</html>
+
