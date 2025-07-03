@@ -39,8 +39,10 @@
         <header class="admin-header">
             <div class="admin-nav">
                 <div class="logo">
-                    <i class="fas fa-seedling"></i>
-                    <h1>Pixie Admin</h1>
+                    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5em;">
+                        <i class="fas fa-seedling"></i>
+                        <h1>Pixie Admin</h1>
+                    </a>
                 </div>
                 <nav class="admin-menu">
                     <button class="menu-btn active" data-section="dashboard">
@@ -54,10 +56,6 @@
                     <button class="menu-btn" data-section="categories">
                         <i class="fas fa-tags"></i>
                         Catégories
-                    </button>
-                    <button class="menu-btn" data-section="distributeurs">
-                        <i class="fas fa-qrcode"></i>
-                        Distributeurs
                     </button>
                     <button class="menu-btn" data-section="qrcodes">
                         <i class="fas fa-barcode"></i>
@@ -189,21 +187,6 @@
                 </div>
             </section>
 
-            <!-- Section Distributeurs -->
-            <section id="distributeurs-section" class="admin-section">
-                <div class="section-header">
-                    <h2>Gestion des distributeurs</h2>
-                    <button id="add-distributeur-btn" class="btn-primary">
-                        <i class="fas fa-plus"></i>
-                        Ajouter un distributeur
-                    </button>
-                </div>
-                
-                <div class="distributeurs-grid" id="distributeurs-grid">
-                    <!-- Distributeurs générés dynamiquement -->
-                </div>
-            </section>
-
             <!-- Section Codes QR -->
             <section id="qrcodes-section" class="admin-section">
                 <div class="section-header">
@@ -317,18 +300,6 @@
                 </div>
             </form>
         </div>
-    </div>
-
-    <!-- Modale pour scanner un QR code avec la caméra -->
-    <div id="qr-scan-modal" class="modal">
-      <div class="modal-content" style="max-width:400px;">
-        <div class="modal-header">
-          <h3>Scanner un code QR</h3>
-          <button class="modal-close" id="qr-scan-close"><i class="fas fa-times"></i></button>
-        </div>
-        <div id="qr-reader" style="width:100%;margin:0 auto;"></div>
-        <div id="qr-scan-result" style="margin-top:1em;text-align:center;"></div>
-      </div>
     </div>
 
     <!-- Scripts des librairies QR et PDF -->

@@ -1144,3 +1144,19 @@ body {
     box-shadow: var(--shadow-lg);
 }
 
+/* Uniformisation des couleurs de police */
+body, .main, .section, .hero-title, .hero-subtitle, .stat-label, .section-title, .section-description, .nav-link, .btn-primary, .btn-secondary, .btn-save, .btn-cancel, .modal-title, .modal-close, .footer, .footer-content, .footer-section, .footer-bottom, .asbl-card, .step-card, .impact-card, .impact-stats, .stat-card, .purchase-btn, .edit-form, .form-group, .form-label, .form-input, .form-actions, .modal-body, .modal-footer {
+    color: #fff !important;
+}
+
+.nav-link.active, .btn-primary, .btn-secondary {
+    background-color: #1a237e !important;
+    color: #fff !important;
+}
+
+/* Corrige les liens bleus par défaut */
+a, a:visited {
+    color: #fff !important;
+    text-decoration: underline;
+}
+

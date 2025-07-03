@@ -15,7 +15,6 @@ let categories = [
     { id: 'developpement', nom: 'Développement', couleur: '#f39c12' }
 ];
 
-let distributeurs = [];
 let qrCodes = []; // Stockage des codes QR générés
 
 // Éléments DOM
@@ -38,7 +37,6 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     updateStats();
     loadRecentActivity();
-    setupQRScanModal();
 });
 
 // Gestion de l'authentification
@@ -76,7 +74,7 @@ function setupEventListeners() {
     // Boutons d'ajout
     document.getElementById('add-asbl-btn').addEventListener('click', () => openAsblModal());
     document.getElementById('add-category-btn').addEventListener('click', () => openCategoryModal());
-    document.getElementById('add-distributeur-btn').addEventListener('click', addDistributeur);
+    // SUPPRIMÉ : Gestion des distributeurs
 
     // Modales
     setupModalEvents();
@@ -122,9 +120,7 @@ function switchSection(sectionName) {
         case 'categories':
             loadCategoriesGrid();
             break;
-        case 'distributeurs':
-            loadDistributeursGrid();
-            break;
+        // case 'distributeurs': supprimé
         case 'qrcodes':
             loadQRCodesGrid();
             break;
@@ -135,7 +131,6 @@ function switchSection(sectionName) {
 function loadAdminData() {
     loadAsblTable();
     loadCategoriesGrid();
-    loadDistributeursGrid();
     loadQRCodesGrid();
     updateStats();
 }
@@ -291,90 +286,6 @@ function deleteCategory(categoryId) {
             loadCategoriesGrid();
             updateStats();
             addActivity('delete', `Catégorie supprimée`);
-        }
-    }
-}
-
-// Gestion des distributeurs
-function loadDistributeursGrid() {
-    const grid = document.getElementById('distributeurs-grid');
-    grid.innerHTML = '';
-
-    if (distributeurs.length === 0) {
-        grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">Aucun distributeur configuré</p>';
-        return;
-    }
-
-    distributeurs.forEach(distributeur => {
-        const card = document.createElement('div');
-        card.className = 'distributeur-card';
-        card.innerHTML = `
-            <div class="distributeur-header">
-                <h4>${distributeur.nom}</h4>
-                <div class="table-actions">
-                    <button class="btn-edit" onclick="editDistributeur('${distributeur.id}')">
-                        <i class="fas fa-edit"></i>
-                    </button>
-                    <button class="btn-danger" onclick="deleteDistributeur('${distributeur.id}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
-            </div>
-            <p><i class="fas fa-map-marker-alt"></i> ${distributeur.adresse}</p>
-            <p><i class="fas fa-qrcode"></i> QR Code: ${distributeur.qrCode}</p>
-            <div style="margin-top: 1rem;">
-                <button class="btn-primary" onclick="generateQRCode('${distributeur.id}')">
-                    <i class="fas fa-download"></i>
-                    Télécharger QR
-                </button>
-            </div>
-        `;
-        grid.appendChild(card);
-    });
-}
-
-function addDistributeur() {
-    const nom = prompt('Nom du distributeur:');
-    const adresse = prompt('Adresse du distributeur:');
-    
-    if (nom && adresse) {
-        const distributeur = {
-            id: 'dist_' + Date.now(),
-            nom: nom,
-            adresse: adresse,
-            qrCode: generateQRCodeData(),
-            dateCreation: new Date().toISOString()
-        };
-        
-        distributeurs.push(distributeur);
-        loadDistributeursGrid();
-        updateStats();
-        addActivity('add', `Distributeur "${nom}" ajouté`);
-    }
-}
-
-function generateQRCodeData(productType = 'SNACK') {
-    const timestamp = Date.now().toString(36).toUpperCase();
-    const random = Math.random().toString(36).substr(2, 6).toUpperCase();
-    return `PIXIE_${productType}_${timestamp}_${random}`;
-}
-
-function generateQRCode(distributeurId) {
-    const distributeur = distributeurs.find(d => d.id === distributeurId);
-    if (distributeur) {
-        // Simulation de génération de QR code
-        alert(`QR Code pour ${distributeur.nom}:\n${distributeur.qrCode}\n\nURL: ${window.location.origin}/qr?code=${distributeur.qrCode}`);
-    }
-}
-
-function deleteDistributeur(distributeurId) {
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce distributeur ?')) {
-        const index = distributeurs.findIndex(d => d.id === distributeurId);
-        if (index !== -1) {
-            distributeurs.splice(index, 1);
-            loadDistributeursGrid();
-            updateStats();
-            addActivity('delete', `Distributeur supprimé`);
         }
     }
 }
@@ -567,14 +478,6 @@ window.editAsbl = editAsbl;
 window.deleteAsbl = deleteAsbl;
 window.editCategory = editCategory;
 window.deleteCategory = deleteCategory;
-window.editDistributeur = editDistributeur;
-window.deleteDistributeur = deleteDistributeur;
-window.generateQRCode = generateQRCode;
-window.generateProductQRCodes = generateProductQRCodes;
-window.downloadQRCode = downloadQRCode;
-window.deleteQRCode = deleteQRCode;
-
-
 
 // Gestion des codes QR
 function loadQRCodesGrid() {
@@ -626,7 +529,9 @@ function loadQRCodesGrid() {
 function createQRCodeCanvas(text, size = 128) {
     const container = document.createElement('div');
     container.style.display = 'inline-block';
-    const qr = new QRCode(container, {
+    // Nettoyage du container
+    container.innerHTML = '';
+    new QRCode(container, {
         text: text,
         width: size,
         height: size,
@@ -667,49 +572,5 @@ function downloadQRCodesPDF(codes) {
     });
     doc.save(`codes_qr_${new Date().toISOString().split('T')[0]}.pdf`);
     addActivity('download', `PDF de codes QR téléchargé (${codes.length} codes)`);
-}
-
-// Interface scan QR code caméra (modale)
-function setupQRScanModal() {
-    const scanBtn = document.createElement('button');
-    scanBtn.className = 'btn-primary';
-    scanBtn.innerHTML = '<i class="fas fa-camera"></i> Scanner un QR code';
-    scanBtn.onclick = function() {
-        document.getElementById('qr-scan-modal').classList.add('active');
-        startQRScanner();
-    };
-    // Ajout du bouton dans la section QR codes si présent
-    const qrcodesSection = document.getElementById('qrcodes-section');
-    if (qrcodesSection) {
-        qrcodesSection.querySelector('.section-header').appendChild(scanBtn);
-    }
-    // Fermeture modale
-    document.getElementById('qr-scan-close').onclick = function() {
-        document.getElementById('qr-scan-modal').classList.remove('active');
-        stopQRScanner();
-    };
-}
-
-function startQRScanner() {
-    const qrReader = new Html5Qrcode("qr-reader");
-    window._qrReaderInstance = qrReader;
-    qrReader.start(
-        { facingMode: "environment" },
-        { fps: 10, qrbox: 250 },
-        qrCodeMessage => {
-            document.getElementById('qr-scan-result').innerHTML = `<b>Code détecté :</b><br>${qrCodeMessage}`;
-            stopQRScanner();
-        },
-        errorMsg => {
-            // Optionnel : afficher les erreurs
-        }
-    );
-}
-function stopQRScanner() {
-    if (window._qrReaderInstance) {
-        window._qrReaderInstance.stop().then(() => {
-            document.getElementById('qr-reader').innerHTML = '';
-        });
-    }
 }
 

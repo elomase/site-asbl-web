@@ -14,8 +14,10 @@
         <div class="container">
             <div class="header-content">
                 <div class="logo">
-                    <i class="fas fa-seedling"></i>
-                    <h1>Pixie</h1>
+                    <a href="index.html" style="text-decoration:none;color:inherit;display:flex;align-items:center;gap:0.5em;">
+                        <i class="fas fa-seedling"></i>
+                        <h1>Pixie</h1>
+                    </a>
                 </div>
                 <nav class="nav">
                     <a href="#accueil" class="nav-link active">Accueil</a>
@@ -144,10 +146,6 @@
                 <div class="section-header">
                     <h2 class="section-title">Nos ASBL Partenaires</h2>
                     <p class="section-description">Choisissez l'ASBL que vous souhaitez soutenir</p>
-                    <button class="edit-mode-btn" id="edit-mode-btn">
-                        <i class="fas fa-edit"></i>
-                        Mode Édition
-                    </button>
                 </div>
 
                 <!-- Filtres -->
@@ -214,94 +212,6 @@
                     </button>
                 </div>
             </div>
-        </div>
-    </div>
-
-    <!-- Modal d'édition ASBL -->
-    <div class="edit-modal" id="edit-modal">
-        <div class="edit-modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title">Éditer l'ASBL</h3>
-                <button class="modal-close" id="edit-modal-close">
-                    <i class="fas fa-times"></i>
-                </button>
-            </div>
-            <form class="edit-form" id="edit-form">
-                <div class="form-group">
-                    <label for="edit-nom">Nom de l'ASBL</label>
-                    <input type="text" id="edit-nom" name="nom" required>
-                </div>
-                
-                <div class="form-group">
-                    <label for="edit-categorie">Catégorie</label>
-                    <select id="edit-categorie" name="categorie" required>
-                        <option value="Humanitaire">Humanitaire</option>
-                        <option value="Médical">Médical</option>
-                        <option value="Environnement">Environnement</option>
-                        <option value="Enfance">Enfance</option>
-                        <option value="Développement">Développement</option>
-                        <option value="Droits humains">Droits humains</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-image">Image/Logo</label>
-                    <div class="image-upload" onclick="document.getElementById('edit-image-input').click()">
-                        <input type="file" id="edit-image-input" accept="image/*">
-                        <div id="image-upload-text">
-                            <i class="fas fa-cloud-upload-alt"></i>
-                            <p>Cliquez pour télécharger une image</p>
-                        </div>
-                        <img id="image-preview" class="image-preview" style="display: none;">
-                    </div>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-description">Description</label>
-                    <textarea id="edit-description" name="description" required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-mission">Mission</label>
-                    <textarea id="edit-mission" name="mission" required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-email">Email</label>
-                    <input type="email" id="edit-email" name="email" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-telephone">Téléphone</label>
-                    <input type="tel" id="edit-telephone" name="telephone" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-adresse">Adresse</label>
-                    <textarea id="edit-adresse" name="adresse" required></textarea>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-website">Site web</label>
-                    <input type="url" id="edit-website" name="website" required>
-                </div>
-
-                <div class="form-group">
-                    <label for="edit-video">Vidéo (URL YouTube, Vimeo, etc.)</label>
-                    <input type="url" id="edit-video" name="video" placeholder="https://www.youtube.com/watch?v=...">
-                    <div class="video-container" id="video-preview-container" style="display: none;">
-                        <div class="video-placeholder">
-                            <i class="fas fa-play-circle"></i>
-                            <p>Aperçu vidéo</p>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="form-actions">
-                    <button type="button" class="btn-cancel" id="edit-cancel">Annuler</button>
-                    <button type="submit" class="btn-save">Sauvegarder</button>
-                </div>
-            </form>
         </div>
     </div>
 
