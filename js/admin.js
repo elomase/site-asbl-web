@@ -38,6 +38,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupEventListeners();
     updateStats();
     loadRecentActivity();
+    setupQRScanModal();
 });
 
 // Gestion de l'authentification
@@ -579,124 +580,136 @@ window.deleteQRCode = deleteQRCode;
 function loadQRCodesGrid() {
     const grid = document.getElementById('qrcodes-grid');
     if (!grid) return;
-    
     grid.innerHTML = '';
-
     if (qrCodes.length === 0) {
         grid.innerHTML = '<p style="text-align: center; color: var(--text-secondary); grid-column: 1 / -1;">Aucun code QR généré</p>';
         return;
     }
-
     qrCodes.forEach(qrCode => {
         const card = document.createElement('div');
         card.className = 'qrcode-card';
+        // Génération du QR code visuel
+        const qrContainer = createQRCodeCanvas(qrCode.code, 96);
+        // Ajout d'un bouton de téléchargement PNG
+        const downloadBtn = document.createElement('button');
+        downloadBtn.className = 'btn-primary';
+        downloadBtn.innerHTML = '<i class="fas fa-image"></i>';
+        downloadBtn.title = 'Télécharger PNG';
+        downloadBtn.onclick = function() {
+            const canvas = qrContainer.querySelector('canvas');
+            if (canvas) downloadCanvasAsPNG(canvas, `${qrCode.code}.png`);
+        };
         card.innerHTML = `
             <div class="qrcode-header">
                 <h4>${qrCode.productType}</h4>
-                <div class="table-actions">
-                    <button class="btn-primary" onclick="downloadQRCode('${qrCode.id}')">
-                        <i class="fas fa-download"></i>
-                    </button>
-                    <button class="btn-danger" onclick="deleteQRCode('${qrCode.id}')">
-                        <i class="fas fa-trash"></i>
-                    </button>
-                </div>
+                <div class="table-actions"></div>
             </div>
+            <div class="qrcode-img"></div>
             <p><i class="fas fa-qrcode"></i> Code: ${qrCode.code}</p>
             <p><i class="fas fa-calendar"></i> Créé le: ${formatDate(qrCode.dateCreation)}</p>
             <p><i class="fas fa-info-circle"></i> Statut: ${qrCode.used ? 'Utilisé' : 'Disponible'}</p>
         `;
+        // Ajout du QR visuel et du bouton dans la carte
+        card.querySelector('.qrcode-img').appendChild(qrContainer);
+        card.querySelector('.table-actions').appendChild(downloadBtn);
+        // ...boutons existants (suppression, etc.)
+        const delBtn = document.createElement('button');
+        delBtn.className = 'btn-danger';
+        delBtn.innerHTML = '<i class="fas fa-trash"></i>';
+        delBtn.onclick = function() { deleteQRCode(qrCode.id); };
+        card.querySelector('.table-actions').appendChild(delBtn);
         grid.appendChild(card);
     });
 }
 
-function generateProductQRCodes() {
-    const quantity = parseInt(prompt('Combien de codes QR voulez-vous générer ?')) || 1;
-    const productType = prompt('Type de produit (ex: SNACK, BOISSON, CHOCOLAT):') || 'SNACK';
-    
-    if (quantity > 0 && quantity <= 100) {
-        const newCodes = [];
-        for (let i = 0; i < quantity; i++) {
-            const qrCode = {
-                id: 'qr_' + Date.now() + '_' + i,
-                code: generateQRCodeData(productType),
-                productType: productType,
-                dateCreation: new Date().toISOString(),
-                used: false,
-                usedBy: null,
-                usedDate: null
-            };
-            newCodes.push(qrCode);
-            qrCodes.push(qrCode);
-        }
-        
-        loadQRCodesGrid();
-        updateStats();
-        addActivity('add', `${quantity} codes QR générés pour ${productType}`);
-        
-        // Proposer le téléchargement en PDF
-        if (confirm('Voulez-vous télécharger les codes QR en PDF ?')) {
-            downloadQRCodesPDF(newCodes);
-        }
-    } else {
-        alert('Veuillez entrer un nombre valide entre 1 et 100');
-    }
+// Génère un QR code visuel (canvas) pour un texte donné
+function createQRCodeCanvas(text, size = 128) {
+    const container = document.createElement('div');
+    container.style.display = 'inline-block';
+    const qr = new QRCode(container, {
+        text: text,
+        width: size,
+        height: size,
+        correctLevel: QRCode.CorrectLevel.H
+    });
+    return container;
 }
 
-function downloadQRCode(qrCodeId) {
-    const qrCode = qrCodes.find(qr => qr.id === qrCodeId);
-    if (qrCode) {
-        // Simulation de téléchargement individuel
-        const url = `${window.location.origin}/qr.html?code=${qrCode.code}`;
-        alert(`Code QR: ${qrCode.code}\nURL: ${url}\n\nCopiez cette URL ou scannez le code QR généré.`);
-    }
+// Télécharge un canvas en PNG
+function downloadCanvasAsPNG(canvas, filename) {
+    const link = document.createElement('a');
+    link.href = canvas.toDataURL('image/png');
+    link.download = filename;
+    link.click();
 }
 
+// Génération PDF avec images QR
 function downloadQRCodesPDF(codes) {
-    // Simulation de génération PDF
-    const pdfContent = codes.map(qr => 
-        `Code QR: ${qr.code}\nType: ${qr.productType}\nURL: ${window.location.origin}/qr.html?code=${qr.code}`
-    ).join('\n\n');
-    
-    const blob = new Blob([pdfContent], { type: 'text/plain' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `codes_qr_${new Date().toISOString().split('T')[0]}.txt`;
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    URL.revokeObjectURL(url);
-    
+    const { jsPDF } = window.jspdf;
+    const doc = new jsPDF();
+    let y = 10;
+    codes.forEach((qr, idx) => {
+        // Générer QR code en canvas
+        const tempDiv = createQRCodeCanvas(qr.code, 80);
+        const canvas = tempDiv.querySelector('canvas');
+        if (canvas) {
+            const imgData = canvas.toDataURL('image/png');
+            doc.addImage(imgData, 'PNG', 10, y, 30, 30);
+        }
+        doc.text(`Code: ${qr.code}`, 45, y + 10);
+        doc.text(`Type: ${qr.productType}`, 45, y + 18);
+        doc.text(`URL: ${window.location.origin}/qr.html?code=${qr.code}`, 10, y + 38);
+        y += 45;
+        if (y > 260 && idx < codes.length - 1) {
+            doc.addPage();
+            y = 10;
+        }
+    });
+    doc.save(`codes_qr_${new Date().toISOString().split('T')[0]}.pdf`);
     addActivity('download', `PDF de codes QR téléchargé (${codes.length} codes)`);
 }
 
-function deleteQRCode(qrCodeId) {
-    const qrCode = qrCodes.find(qr => qr.id === qrCodeId);
-    if (qrCode && qrCode.used) {
-        alert('Impossible de supprimer un code QR déjà utilisé');
-        return;
+// Interface scan QR code caméra (modale)
+function setupQRScanModal() {
+    const scanBtn = document.createElement('button');
+    scanBtn.className = 'btn-primary';
+    scanBtn.innerHTML = '<i class="fas fa-camera"></i> Scanner un QR code';
+    scanBtn.onclick = function() {
+        document.getElementById('qr-scan-modal').classList.add('active');
+        startQRScanner();
+    };
+    // Ajout du bouton dans la section QR codes si présent
+    const qrcodesSection = document.getElementById('qrcodes-section');
+    if (qrcodesSection) {
+        qrcodesSection.querySelector('.section-header').appendChild(scanBtn);
     }
-    
-    if (confirm('Êtes-vous sûr de vouloir supprimer ce code QR ?')) {
-        const index = qrCodes.findIndex(qr => qr.id === qrCodeId);
-        if (index !== -1) {
-            qrCodes.splice(index, 1);
-            loadQRCodesGrid();
-            updateStats();
-            addActivity('delete', `Code QR supprimé`);
-        }
-    }
+    // Fermeture modale
+    document.getElementById('qr-scan-close').onclick = function() {
+        document.getElementById('qr-scan-modal').classList.remove('active');
+        stopQRScanner();
+    };
 }
 
-function markQRCodeAsUsed(code, asblId) {
-    const qrCode = qrCodes.find(qr => qr.code === code);
-    if (qrCode && !qrCode.used) {
-        qrCode.used = true;
-        qrCode.usedBy = asblId;
-        qrCode.usedDate = new Date().toISOString();
-        return true;
+function startQRScanner() {
+    const qrReader = new Html5Qrcode("qr-reader");
+    window._qrReaderInstance = qrReader;
+    qrReader.start(
+        { facingMode: "environment" },
+        { fps: 10, qrbox: 250 },
+        qrCodeMessage => {
+            document.getElementById('qr-scan-result').innerHTML = `<b>Code détecté :</b><br>${qrCodeMessage}`;
+            stopQRScanner();
+        },
+        errorMsg => {
+            // Optionnel : afficher les erreurs
+        }
+    );
+}
+function stopQRScanner() {
+    if (window._qrReaderInstance) {
+        window._qrReaderInstance.stop().then(() => {
+            document.getElementById('qr-reader').innerHTML = '';
+        });
     }
-    return false;
 }
 
